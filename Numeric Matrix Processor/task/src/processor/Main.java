@@ -5,49 +5,72 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
-        int n1 = scanner.nextInt();
-        int m1 = scanner.nextInt();
-        int[][] matrix1 = new int[n1][m1];
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                matrix1[i][j] = scanner.nextInt();
-            }
-        }
+        MatrixOperations operations = new MatrixOperations();
+        UserInterface userInterface = new UserInterface();
 
-        int n2 = scanner.nextInt();
-        int m2 = scanner.nextInt();
-        int[][] matrix2 = new int[n2][m2];
-        for (int i = 0; i < matrix2.length; i++) {
-            for (int j = 0; j < matrix2[0].length; j++) {
-                matrix2[i][j] = scanner.nextInt();
-            }
-        }
-
-        if (n1 == n2 && m1 == m2) {
-            int[][] matrixSum = sumMatrices(matrix1, matrix2);
-            print(matrixSum);
-        } else {
-            System.out.println("ERROR");
-        }
-    }
-
-    static void print(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                System.out.print(matrix[i][j] + " ");
-            }
+        while (true) {
+            userInterface.showMenu();
+            System.out.print("Your choice: ");
             System.out.println();
-        }
-    }
+            int option = scanner.nextInt();
 
-    static int[][] sumMatrices(int[][] matrix1, int[][] matrix2) {
-        int[][] matrixSum = new int[matrix1.length][matrix1[0].length];
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                matrixSum[i][j] = matrix1[i][j] + matrix2[i][j];
+            if (option == 0) {
+                break;
             }
-        }
 
-        return matrixSum;
+            double[][][] matrices;
+            double[][] matrix;
+            double[][] resultMatrix = new double[0][0];
+            switch (option) {
+                case 1:
+                    matrices = userInterface.readTwoMatrices();
+                    resultMatrix = operations.addMatrices(matrices[0], matrices[1]);
+                    break;
+                case 2:
+                    matrix = userInterface.readOneMatrix();
+                    System.out.print("Enter constant: ");
+                    double constant = scanner.nextDouble();
+                    resultMatrix = operations.multiplyMatrix(matrix, constant);
+                    break;
+                case 3:
+                    matrices = userInterface.readTwoMatrices();
+                    resultMatrix = operations.multiplyMatrices(matrices[0], matrices[1]);
+                    break;
+                case 4:
+                    userInterface.showTransposeMenu();
+
+                    System.out.print("Your choice: ");
+                    int transposeOption = scanner.nextInt();
+                    matrix = userInterface.readOneMatrix();
+
+                    switch (transposeOption) {
+                        case 1:
+                            resultMatrix = operations.transposeMain(matrix);
+                            break;
+                        case 2:
+                            resultMatrix = operations.transposeSide(matrix);
+                            break;
+                        case 3:
+                            resultMatrix = operations.transposeVertical(matrix);
+                            break;
+                        case 4:
+                            resultMatrix = operations.transposeHorizontal(matrix);
+                            break;
+                    }
+
+                    break;
+                case 5:
+                    matrix = userInterface.readOneMatrix();
+                    resultMatrix = new double[][] {{operations.calculateDeterminant(matrix)}};
+                    break;
+                case 6:
+                    matrix = userInterface.readOneMatrix();
+                    resultMatrix = operations.inverseMatrix(matrix);
+                    break;
+            }
+
+            System.out.println("The result is:");
+            userInterface.print(resultMatrix);
+        }
     }
 }

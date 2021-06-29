@@ -481,6 +481,181 @@ files:
 
     }
   learner_created: false
+- name: src/processor/MatrixOperations.java
+  visible: true
+  text: |-
+    package processor;
+
+    import java.util.Scanner;
+
+    public class MatrixOperations {
+        double[][] addMatrices(double[][] matrix1, double[][] matrix2) {
+            if (matrix1.length != matrix2.length || matrix1[0].length != matrix2[0].length) {
+                throw new IllegalArgumentException("Different matrices dimensions");
+            }
+
+            double[][] matrixSum = new double[matrix1.length][matrix1[0].length];
+            for (int i = 0; i < matrix1.length; i++) {
+                for (int j = 0; j < matrix1[0].length; j++) {
+                    matrixSum[i][j] = matrix1[i][j] + matrix2[i][j];
+                }
+            }
+
+            return matrixSum;
+        }
+
+        double[][] multiplyMatrix(double[][] matrix, double constant) {
+            double[][] matrixMultiplication = new double[matrix.length][matrix[0].length];
+            for (int i = 0; i < matrixMultiplication.length; i++) {
+                for (int j = 0; j < matrixMultiplication[0].length; j++) {
+                    matrixMultiplication[i][j] = matrix[i][j] * constant;
+                }
+            }
+
+            return matrixMultiplication;
+        }
+
+        double[][] multiplyMatrices(double[][] matrix1, double[][] matrix2) {
+            if (matrix1[0].length != matrix2.length) {
+                throw new IllegalArgumentException("Matrices can't be multiplied");
+            }
+
+            double[][] matricesMultiplication = new double[matrix1.length][matrix2[0].length];
+            for (int i = 0; i < matricesMultiplication.length; i++) {
+                for (int j = 0; j < matricesMultiplication[0].length; j++) {
+                    double element = 0;
+                    for (int k = 0; k < matrix1[0].length; k++) {
+                        element += matrix1[i][k] * matrix2[k][j];
+                    }
+                    matricesMultiplication[i][j] = element;
+                }
+            }
+
+            return matricesMultiplication;
+        }
+
+        double[][] transposeMain(double[][] matrix) {
+            double[][] resultMatrix = new double[matrix[0].length][matrix.length];
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < matrix[0].length; j++) {
+                    resultMatrix[j][i] = matrix[i][j];
+                }
+            }
+
+            return resultMatrix;
+        }
+
+        double[][] transposeSide(double[][] matrix) {
+            double[][] resultMatrix = new double[matrix[0].length][matrix.length];
+            for (int i = 0; i < resultMatrix.length; i++) {
+                for (int j = 0; j < resultMatrix[0].length; j++) {
+                    resultMatrix[i][j] = matrix[matrix.length - 1 - j][matrix[0].length - 1 - i];
+                }
+            }
+
+            return resultMatrix;
+        }
+
+        double[][] transposeVertical(double[][] matrix) {
+            double[][] resultMatrix = new double[matrix.length][matrix[0].length];
+            for (int i = 0; i < resultMatrix.length; i++) {
+                for (int j = 0; j < resultMatrix[0].length; j++) {
+                    resultMatrix[i][j] = matrix[i][matrix[0].length - 1 - j];
+                }
+            }
+
+            return resultMatrix;
+        }
+
+        double[][] transposeHorizontal(double[][] matrix) {
+            double[][] resultMatrix = new double[matrix.length][matrix[0].length];
+            for (int i = 0; i < resultMatrix[0].length; i++) {
+                for (int j = 0; j < resultMatrix.length; j++) {
+                    resultMatrix[j][i] = matrix[matrix.length - 1 - j][i];
+                }
+            }
+
+            return resultMatrix;
+        }
+    }
+  learner_created: true
+- name: src/processor/UserInterface.java
+  visible: true
+  text: |-
+    package processor;
+
+    import java.util.Scanner;
+
+    public class UserInterface {
+        private final Scanner scanner = new Scanner(System.in);
+        double[][] matrixInit(int row, int column) {
+            final Scanner scanner = new Scanner(System.in);
+
+            double[][] matrix = new double[row][column];
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < matrix[0].length; j++) {
+                    matrix[i][j] = scanner.nextDouble();
+                }
+            }
+
+            return matrix;
+        }
+
+        void print(double[][] matrix) {
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < matrix[0].length; j++) {
+                    System.out.print(matrix[i][j] + " ");
+                }
+                System.out.println();
+            }
+        }
+
+        void showMenu() {
+            System.out.println("1. Add matrices");
+            System.out.println("2. Multiply matrix by a constant");
+            System.out.println("3. Multiply matrices");
+            System.out.println("4. Transpose matrix");
+            System.out.println("0. Exit");
+        }
+
+        void showTransposeMenu() {
+            System.out.println("1. Main diagonal");
+            System.out.println("2. Side diagonal");
+            System.out.println("3. Vertical line");
+            System.out.println("4. Horizontal line");
+            System.out.println("");
+        }
+
+        double[][] readOneMatrix() {
+            System.out.print("Enter size of matrix: ");
+            int n1 = scanner.nextInt();
+            int m1 = scanner.nextInt();
+            System.out.println("Enter matrix:");
+            double[][] matrix1 = matrixInit(n1, m1);
+
+            return matrix1;
+        }
+
+        double[][][] readTwoMatrices() {
+            System.out.print("Enter size of first matrix: ");
+            int n1 = scanner.nextInt();
+            int m1 = scanner.nextInt();
+            System.out.println("Enter first matrix:");
+            double[][] matrix1 = matrixInit(n1, m1);
+
+            System.out.print("Enter size of second matrix: ");
+            int n2 = scanner.nextInt();
+            int m2 = scanner.nextInt();
+            System.out.println("Enter second matrix:");
+            double[][] matrix2 = matrixInit(n2, m2);
+
+            return new double[][][] {matrix1, matrix2};
+        }
+    }
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/60/stages/327/implement#comment
-status: Unchecked
-record: -1
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Tue, 29 Jun 2021 10:26:02 UTC
+record: 5
